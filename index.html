@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج ردود تلقائية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-box {
+            width: 400px;
+            height: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-log {
+            padding: 20px;
+            height: 85%;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: #e9e9e9;
+            color: black;
+            align-self: flex-start;
+        }
+
+        .input-box {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .input-box input {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .input-box button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-box button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-box">
+        <div class="chat-log" id="chat-log">
+            <!-- رسائل الدردشة ستظهر هنا -->
+        </div>
+        <div class="input-box">
+            <input type="text" id="user-input" placeholder="اكتب هنا..." />
+            <button onclick="sendMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <script>
+        let botReplies = {};
+
+        // تحميل الردود من ملف JSON
+        fetch( responses.json )
+        .then(response => response.json())
+        .then(data => {
+            botReplies = data;
+        });
+
+        function sendMessage() {
+            const userInput = document.getElementById( user-input ).value;
+            if (userInput.trim() === "") return;
+
+            // إضافة رسالة المستخدم إلى الدردشة
+            addMessage(userInput,  user-message );
+
+            // مسح حقل الإدخال
+            document.getElementById( user-input ).value =   ;
+
+            // معالجة الرد بناءً على المدخلات
+            const botReply = getBotReply(userInput);
+            setTimeout(() => addMessage(botReply,  bot-message ), 500);
+        }
+
+        function addMessage(text, className) {
+            const chatLog = document.getElementById( chat-log );
+            const messageElement = document.createElement( div );
+            messageElement.classList.add( message , className);
+            messageElement.innerText = text;
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        function getBotReply(input) {
+            input = input.toLowerCase();
+
+            // البحث عن الرد المناسب في الكائن
+            for (let keyword in botReplies) {
+                if (input.includes(keyword)) {
+                    return botReplies[keyword];
+                }
+            }
+
+            // إذا لم يجد أي رد مناسب
+            return "عذراً، لم أفهم ما قلته.";
+        }
+    </script>
+
+</body>
+</html>
