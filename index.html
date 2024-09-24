@@ -96,10 +96,10 @@
 
         // تحميل الردود من ملف JSON
         fetch( responses.json )
-        .then(response => response.json())
-        .then(data => {
-            botReplies = data;
-        });
+            .then(response => response.json())
+            .then(data => {
+                botReplies = data;
+            });
 
         function sendMessage() {
             const userInput = document.getElementById( user-input ).value;
